@@ -1,14 +1,15 @@
-package blog.app.model.dto;
+package blog.app.model.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class UserDetailsDto {
+public class UserSignupDto {
 
     private String username;
+    private String password;
+    private String email;
     private String phone;
-    private String about;
 
 }

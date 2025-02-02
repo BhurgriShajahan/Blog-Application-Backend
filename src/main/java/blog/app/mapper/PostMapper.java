@@ -13,13 +13,13 @@ public interface PostMapper {
 
     @Mappings({
             @Mapping(source = "category.id", target = "categoryId"),
-            @Mapping(source = "user.id", target = "userId")
+//            @Mapping(source = "user.id", target = "userId")
     })
     PostDto entityToDto(Post post);
 
     @Mappings({
             @Mapping(target = "category.id", source = "categoryId"),
-            @Mapping(target = "user.id", source = "userId")
+//            @Mapping(target = "user.id", source = "userId")
     })
     Post dtoToEntity(PostDto postDto);
 }

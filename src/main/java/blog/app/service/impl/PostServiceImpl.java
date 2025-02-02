@@ -10,11 +10,13 @@ import blog.app.model.dto.UpdatePostDto;
 import blog.app.model.entities.Category;
 import blog.app.model.entities.Post;
 import blog.app.model.entities.User;
-import blog.app.model.response.PostResponseDto;
+import blog.app.model.dto.response.PostResponseDto;
 import blog.app.repository.CategoryRepository;
 import blog.app.repository.PostRepository;
 import blog.app.repository.UserRepository;
 import blog.app.service.PostService;
+import blog.app.util.AuthenticatedUser;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -45,24 +48,13 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     private final PostDetailsMapper postDetailsMapper;
     private final UpdatePostMapper updatePostMapper;
+    private final AuthenticatedUser authenticatedUser;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository,
-                           PostMapper postMapper,
-                           CategoryRepository categoryRepository,
-                           UserRepository userRepository,
-                           PostDetailsMapper postDetailsMapper,
-                           UpdatePostMapper updatePostMapper) {
-        this.postRepository = postRepository;
-        this.postMapper = postMapper;
-        this.categoryRepository=categoryRepository;
-        this.userRepository=userRepository;
-        this.postDetailsMapper=postDetailsMapper;
-        this.updatePostMapper=updatePostMapper;
-    }
     @Override
     public CustomResponseEntity<PostDto> createPost(PostDto postDto, MultipartFile file) {
         try {
+
+            Long authUserId = authenticatedUser.getAuthUserId();
             logger.info("Creating a new post with title: {}", postDto.getTitle());
 
             // Fetch Category and User
@@ -71,13 +63,18 @@ public class PostServiceImpl implements PostService {
                 return CustomResponseEntity.error("Category not found");
             }
 
-            Optional<User> user = userRepository.findById(postDto.getUserId());
+            Optional<User> user = userRepository.findById(authUserId);
+
             if (user.isEmpty()) {
-                return CustomResponseEntity.error("User not found");
+                return CustomResponseEntity.error("User not found!");
             }
 
+            postDto.setUserId(user.get().getId());
+            postDto.setCategoryId(category.get().getId());
+            postDto.setCreateAt(new Date());
+
             Post post = postMapper.dtoToEntity(postDto);
-            post.setCategory(category.get());
+
             post.setUser(user.get());
             post.setCreateAt(new Date());
 

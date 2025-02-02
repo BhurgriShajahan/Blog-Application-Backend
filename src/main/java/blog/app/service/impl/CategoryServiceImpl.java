@@ -6,6 +6,7 @@ import blog.app.model.dto.CategoryDto;
 import blog.app.model.entities.Category;
 import blog.app.repository.CategoryRepository;
 import blog.app.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -22,12 +24,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository, CategoryMapper categoryMapper) {
-        this.categoryRepository = categoryRepository;
-        this.categoryMapper = categoryMapper;
-    }
 
     @Override
     public CustomResponseEntity<CategoryDto> create(CategoryDto categoryDto) {
@@ -43,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryDto = categoryMapper.entityToDto(category);
 
             logger.info("Category created successfully: {}", categoryDto);
-            return new CustomResponseEntity<>( categoryDto,"Category created successfully");
+            return new CustomResponseEntity<>(categoryDto, "Category created successfully");
         } catch (Exception e) {
             logger.error("Error creating category: {}", e.getMessage(), e);
             return new CustomResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to create category", null);
@@ -82,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
             CategoryDto categoryDto = categoryMapper.entityToDto(categoryOptional.get());
 
             logger.info("Fetched category with ID: {}", categoryId);
-            return new CustomResponseEntity<>(categoryDto,"Category fetched successfully");
+            return new CustomResponseEntity<>(categoryDto, "Category fetched successfully");
         } catch (Exception e) {
             logger.error("Error fetching category with ID {}: {}", categoryId, e.getMessage(), e);
             return new CustomResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Failed to fetch category", null);

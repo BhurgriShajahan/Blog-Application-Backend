@@ -5,13 +5,15 @@ import blog.app.model.CustomResponseEntity;
 import blog.app.model.dto.PostDetailsDto;
 import blog.app.model.dto.PostDto;
 import blog.app.model.dto.UpdatePostDto;
-import blog.app.model.response.PostResponseDto;
+import blog.app.model.dto.response.PostResponseDto;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RequestMapping("/v1/post/")
+//@PreAuthorize("hasRole('USER','ADMIN')")
 public interface PostControllerEndpoints {
 
     //Create post
@@ -19,6 +21,7 @@ public interface PostControllerEndpoints {
     CustomResponseEntity<PostDto> createPost(@ModelAttribute PostDto postDto, @RequestParam MultipartFile file);
 
     //Fetch all posts
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping
     CustomResponseEntity<PostResponseDto> fetchAllPosts(
             @RequestParam(name = "pageNumber" , defaultValue = Constants.PAGE_NUMBER, required = false) int pageNumber,

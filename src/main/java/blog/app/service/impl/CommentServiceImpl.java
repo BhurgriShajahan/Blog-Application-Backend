@@ -12,6 +12,7 @@ import blog.app.repository.CommentRepository;
 import blog.app.repository.PostRepository;
 import blog.app.repository.UserRepository;
 import blog.app.service.CommentService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class CommentServiceImpl implements CommentService {
 
@@ -29,19 +31,6 @@ public class CommentServiceImpl implements CommentService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final UpdateCommentMapper updateCommentMapper;
-
-    @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository,
-                              CommentMapper commentMapper,
-                              UserRepository userRepository,
-                              PostRepository postRepository,
-                              UpdateCommentMapper updateCommentMapper) {
-        this.commentRepository = commentRepository;
-        this.commentMapper = commentMapper;
-        this.userRepository=userRepository;
-        this.postRepository=postRepository;
-        this.updateCommentMapper=updateCommentMapper;
-    }
 
     @Override
     public CustomResponseEntity<CommentDto> createComment(CommentDto commentDto,Long postId) {

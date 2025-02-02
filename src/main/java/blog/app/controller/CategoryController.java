@@ -4,20 +4,17 @@ import blog.app.endpoints.CategoryControllerEndpoints;
 import blog.app.model.CustomResponseEntity;
 import blog.app.model.dto.CategoryDto;
 import blog.app.service.CategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class CategoryController implements CategoryControllerEndpoints {
 
-    CategoryService categoryService;
-
-    @Autowired
-    CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private final CategoryService categoryService;
 
     @Override
     public CustomResponseEntity<CategoryDto> create(CategoryDto categoryDto) {

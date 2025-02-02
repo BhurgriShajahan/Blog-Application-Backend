@@ -5,21 +5,19 @@ import blog.app.model.CustomResponseEntity;
 import blog.app.model.dto.PostDetailsDto;
 import blog.app.model.dto.PostDto;
 import blog.app.model.dto.UpdatePostDto;
-import blog.app.model.response.PostResponseDto;
+import blog.app.model.dto.response.PostResponseDto;
 import blog.app.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class PostController implements PostControllerEndpoints {
 
     private final PostService postService;
-
-    public PostController(PostService postService) {
-        this.postService = postService;
-    }
 
     @Override
     public CustomResponseEntity<PostDto> createPost(PostDto postDto,MultipartFile file) {

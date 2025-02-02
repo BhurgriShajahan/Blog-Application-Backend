@@ -4,9 +4,7 @@ import blog.app.model.CustomResponseEntity;
 import blog.app.model.dto.PostDetailsDto;
 import blog.app.model.dto.PostDto;
 import blog.app.model.dto.UpdatePostDto;
-import blog.app.model.entities.Post;
-import blog.app.model.response.PostResponseDto;
-import org.springframework.data.repository.query.Param;
+import blog.app.model.dto.response.PostResponseDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
